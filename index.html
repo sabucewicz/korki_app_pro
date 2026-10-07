@@ -44,7 +44,7 @@
       --col-once-border: #ec4899;
       --col-once-text: #fbcfe8;
 
-      --row-height: 50px;
+      --row-height: 52px;
     }
 
     * {
@@ -155,6 +155,15 @@
       box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
     }
 
+    .nav-tab-btn.premium-btn {
+      color: #fcd34d;
+    }
+    .nav-tab-btn.premium-btn.active {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+    }
+
     .kpi-bar {
       display: flex;
       align-items: center;
@@ -227,7 +236,7 @@
       100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
     }
 
-    /* ZARZĄDZANIE WIDOKAMI (ZAKŁADKAMI) */
+    /* PRZEŁĄCZANIE ZAKŁADEK */
     .view-container {
       display: none;
       flex: 1;
@@ -238,13 +247,12 @@
       display: flex;
     }
 
-    /* Widok 1: Dashboard i Kalendarz */
-    .dashboard-body {
-      display: grid;
-      grid-template-columns: 1fr 340px;
-      gap: 14px;
+    /* ZAKŁADKA 1: SAM HARMONOGRAM */
+    .schedule-full-view {
       width: 100%;
       height: 100%;
+      display: flex;
+      flex-direction: column;
       min-height: 0;
     }
 
@@ -257,6 +265,8 @@
       flex-direction: column;
       overflow: hidden;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      flex: 1;
+      min-height: 0;
     }
 
     .panel-header {
@@ -282,13 +292,13 @@
       overflow: auto;
       display: flex;
       flex-direction: column;
-      padding: 6px;
+      padding: 8px;
     }
 
     .calendar-grid {
       display: grid;
-      grid-template-columns: 65px repeat(7, 1fr);
-      min-width: 840px;
+      grid-template-columns: 70px repeat(7, 1fr);
+      min-width: 900px;
       border-collapse: separate;
       border-spacing: 4px;
       position: relative;
@@ -412,8 +422,8 @@
 
     #current-time-line {
       position: absolute;
-      left: 70px;
-      right: 6px;
+      left: 76px;
+      right: 8px;
       height: 1.5px;
       background: rgba(244, 63, 94, 0.45);
       z-index: 25;
@@ -434,109 +444,6 @@
       box-shadow: 0 0 5px rgba(244, 63, 94, 0.5);
     }
 
-    /* Baza uczniów w pasku bocznym harmonogramu */
-    .students-scroll {
-      flex: 1;
-      overflow-y: auto;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .student-item {
-      background: rgba(255, 255, 255, 0.025);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: all 0.15s ease;
-    }
-
-    .student-item:hover {
-      border-color: rgba(255, 255, 255, 0.18);
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .st-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
-
-    .st-pill {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .st-pill.podstawowka { background: #10b981; box-shadow: 0 0 8px #10b981; }
-    .st-pill.liceum-podst { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
-    .st-pill.liceum-rozsz { background: #8b5cf6; box-shadow: 0 0 8px #8b5cf6; }
-    .st-pill.inf-rozsz { background: #06b6d4; box-shadow: 0 0 8px #06b6d4; }
-
-    .st-name {
-      font-size: 0.88rem;
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .st-desc {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .st-rate {
-      font-size: 0.92rem;
-      font-weight: 800;
-      color: var(--success);
-      margin-right: 8px;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .btn-icon-del {
-      background: rgba(239, 68, 68, 0.12);
-      border: 1px solid rgba(239, 68, 68, 0.25);
-      color: var(--danger);
-      cursor: pointer;
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      transition: all 0.15s;
-    }
-    .btn-icon-del:hover {
-      background: var(--danger);
-      color: #fff;
-    }
-
-    .btn-add-primary {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 12px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.15s;
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-    }
-    .btn-add-primary:hover {
-      background: var(--accent-hover);
-      transform: translateY(-1px);
-    }
-
-    /* Pasek dni na mobile */
     .mobile-day-tabs {
       display: none;
       padding: 10px 14px;
@@ -560,6 +467,116 @@
     }
     .m-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
     .m-tab.is-today { border-color: #06b6d4; color: #38bdf8; }
+
+    /* UNIWERSALNE PANELE DLA POZOSTAŁYCH ZAKŁADEK */
+    .full-panel {
+      width: 100%;
+      height: 100%;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 22px;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .panel-section-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    .panel-section-sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .placeholder-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px dashed var(--card-border);
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      color: var(--text-muted);
+      margin-top: 18px;
+    }
+
+    .btn-add-primary {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-add-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Pasek limitu */
+    .limit-progress-bar-bg {
+      width: 100%;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 99px;
+      overflow: hidden;
+      margin: 12px 0 6px 0;
+    }
+    .limit-progress-bar-fill {
+      height: 100%;
+      width: 35%;
+      background: linear-gradient(90deg, #10b981, #f59e0b);
+      border-radius: 99px;
+    }
+
+    /* Karta Premium */
+    .pricing-card {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(99, 102, 241, 0.08));
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 20px;
+      padding: 24px;
+      max-width: 500px;
+      margin-top: 20px;
+    }
+
+    .price-badge {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin: 14px 0;
+    }
+
+    .btn-upgrade {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      font-weight: 800;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      width: 100%;
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.35);
+      transition: all 0.2s ease;
+    }
+    .btn-upgrade:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
 
     /* Modale */
     .modal-backdrop {
@@ -628,54 +645,13 @@
     .btn-m-clear { background: rgba(244, 63, 94, 0.15); border: 1px solid rgba(244, 63, 94, 0.3); color: var(--danger); }
     .btn-m-submit { background: var(--accent); color: #fff; }
 
-    /* STYLE NOWYCH WIDOKÓW (Baza uczniów, Finanse) */
-    .full-panel {
-      width: 100%;
-      height: 100%;
-      background: var(--card-bg);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--card-border);
-      border-radius: 22px;
-      display: flex;
-      flex-direction: column;
-      padding: 24px;
-      overflow-y: auto;
-    }
-
-    .placeholder-card {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px dashed var(--card-border);
-      border-radius: 16px;
-      padding: 30px;
-      text-align: center;
-      color: var(--text-muted);
-      margin-top: 20px;
-    }
-
-    /* Pasek limitu nierejestrowanej */
-    .limit-progress-bar-bg {
-      width: 100%;
-      height: 12px;
-      background: rgba(255, 255, 255, 0.06);
-      border-radius: 99px;
-      overflow: hidden;
-      margin: 12px 0 6px 0;
-    }
-    .limit-progress-bar-fill {
-      height: 100%;
-      width: 35%; /* Przykładowa wartość testowa */
-      background: linear-gradient(90deg, #10b981, #f59e0b);
-      border-radius: 99px;
-      transition: width 0.3s ease;
-    }
-
-    /* Responsywność */
+    /* RWD */
     @media (max-width: 960px) {
       body { padding: 8px; height: auto; }
       .app-layout { height: auto; }
       header { flex-direction: column; align-items: stretch; gap: 12px; }
-      .nav-tabs { overflow-x: auto; width: 100%; justify-content: space-between; }
-      .dashboard-body { grid-template-columns: 1fr; }
+      .nav-tabs { overflow-x: auto; width: 100%; justify-content: flex-start; scrollbar-width: none; }
+      .nav-tabs::-webkit-scrollbar { display: none; }
       .kpi-bar { width: 100%; justify-content: space-between; }
       .mobile-day-tabs { display: flex; }
       .calendar-grid { min-width: 100%; grid-template-columns: 55px 1fr !important; }
@@ -688,7 +664,7 @@
 <body>
 
   <div class="app-layout">
-    <!-- Pasek górny z nawigacją po zakładkach -->
+    <!-- Górny Header -->
     <header>
       <div class="brand">
         <div class="brand-logo">🎓</div>
@@ -700,17 +676,20 @@
 
       <!-- Menu zakładek -->
       <nav class="nav-tabs">
-        <button class="nav-tab-btn active" onclick="switchView('schedule')">
+        <button class="nav-tab-btn active" onclick="switchView('schedule', this)">
           <span>📅</span> Harmonogram
         </button>
-        <button class="nav-tab-btn" onclick="switchView('students')">
+        <button class="nav-tab-btn" onclick="switchView('students', this)">
           <span>👥</span> Uczniowie
         </button>
-        <button class="nav-tab-btn" onclick="switchView('finances')">
-          <span>💰</span> Finanse & Limit
+        <button class="nav-tab-btn" onclick="switchView('finances', this)">
+          <span>💰</span> Finanse
         </button>
-        <button class="nav-tab-btn" onclick="switchView('settings')">
+        <button class="nav-tab-btn" onclick="switchView('settings', this)">
           <span>⚙️</span> Ustawienia
+        </button>
+        <button class="nav-tab-btn premium-btn" onclick="switchView('premium', this)">
+          <span>⭐</span> Premium
         </button>
       </nav>
 
@@ -731,10 +710,9 @@
       </div>
     </header>
 
-    <!-- WIDOK 1: HARMONOGRAM (Twój obecny pulpit) -->
+    <!-- ZAKŁADKA 1: SAM HARMONOGRAM (PEŁNA SZEROKOŚĆ) -->
     <section id="view-schedule" class="view-container active-view">
-      <div class="dashboard-body">
-        <!-- Kalendarz -->
+      <div class="schedule-full-view">
         <div class="panel">
           <div class="panel-header">
             <div class="panel-title">
@@ -750,44 +728,33 @@
             <div class="calendar-grid" id="main-grid"></div>
           </div>
         </div>
-
-        <!-- Baza uczniów w podglądzie -->
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">
-              <span>👥 Szybka lista</span>
-            </div>
-            <button class="btn-add-primary" onclick="openStudentModal()">+ Dodaj</button>
-          </div>
-          <div class="students-scroll" id="students-container"></div>
-        </div>
       </div>
     </section>
 
-    <!-- WIDOK 2: BAZA UCZNIÓW (Dedykowana zakładka - zrobimy w Kroku 2) -->
+    <!-- ZAKŁADKA 2: UCZNIOWIE -->
     <section id="view-students" class="view-container">
       <div class="full-panel">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <div>
-            <h2 style="font-size: 1.3rem; font-weight: 800;">👥 Kartoteka Uczniów</h2>
-            <p style="font-size: 0.8rem; color: var(--text-muted);">Zarządzaj danymi kontaktowymi, stawkami i notatkami uczniów</p>
+            <h2 class="panel-section-title">👥 Baza Uczniów</h2>
+            <p class="panel-section-sub">Kartoteki uczniów, telefony do rodziców, notatki i historia zajęć</p>
           </div>
-          <button class="btn-add-primary" onclick="openStudentModal()">+ Nowy Uczeń</button>
+          <button class="btn-add-primary" onclick="openStudentModal()">+ Dodaj Ucznia</button>
         </div>
 
         <div class="placeholder-card">
-          <p>Tu w Kroku 2 wdrożymy pełne karty uczniów z numerami do rodziców, notatkami i historią lekcji.</p>
+          <p>Tu w następnym kroku zrobimy pełną bazę uczniów z wyszukiwarką, filtrami i szczegółowymi kartami.</p>
         </div>
       </div>
     </section>
 
-    <!-- WIDOK 3: FINANSE I LIMIT (Zrobimy w Kroku 3) -->
+    <!-- ZAKŁADKA 3: FINANSE -->
     <section id="view-finances" class="view-container">
       <div class="full-panel">
-        <h2 style="font-size: 1.3rem; font-weight: 800;">💰 Finanse & Działalność Nierejestrowana</h2>
-        <p style="font-size: 0.8rem; color: var(--text-muted);">Kontroluj limit przychodów i ewidencję sprzedaży bez podatkowych niespodzianek</p>
+        <h2 class="panel-section-title">💰 Finanse</h2>
+        <p class="panel-section-sub">Ewidencja przychodów, rozliczenia z rodzicami oraz kontrola limitu działalności nierejestrowanej</p>
 
-        <!-- Karta limitu działalności nierejestrowanej -->
+        <!-- Karta limitu -->
         <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border); border-radius: 18px; padding: 20px; margin-top: 20px;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Limit kwartalny działalności nierejestrowanej</span>
@@ -797,25 +764,55 @@
             <div class="limit-progress-bar-fill"></div>
           </div>
           <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted);">
-            <span>Wykorzystano: 3 800 zł (35%)</span>
-            <span style="color: var(--success);">Bezpiecznie (do limitu: 7 013,50 zł)</span>
+            <span>Wykorzystano w tym kwartale: 0,00 zł (0%)</span>
+            <span style="color: var(--success);">Bezpiecznie (pozostało: 10 813,50 zł)</span>
           </div>
         </div>
 
         <div class="placeholder-card">
-          <p>Tu w Kroku 3 wdrożymy tabelę rozliczeń z rodzicami, ewidencję sprzedaży do PIT-36 i generator SMS-ów z prośbą o wpłatę BLIK.</p>
+          <p>Tu wdrożymy tabelę rozliczeń z rodzicami, statusy opłat (opłacona/zaległa) oraz eksport ewidencji sprzedaży.</p>
         </div>
       </div>
     </section>
 
-    <!-- WIDOK 4: USTAWIENIA -->
+    <!-- ZAKŁADKA 4: USTAWIENIA -->
     <section id="view-settings" class="view-container">
       <div class="full-panel">
-        <h2 style="font-size: 1.3rem; font-weight: 800;">⚙️ Ustawienia konta</h2>
-        <p style="font-size: 0.8rem; color: var(--text-muted);">Konfiguracja godzin pracy, numeru telefonu do BLIK i subskrypcji</p>
-        
+        <h2 class="panel-section-title">⚙️ Ustawienia</h2>
+        <p class="panel-section-sub">Dostosuj godziny pracy harmonogramu i swoje dane kontaktowe</p>
+
         <div class="placeholder-card">
-          <p>Tu znajdzie się konfiguracja Twojego numeru BLIK do rozliczeń oraz status subskrypcji aplikacji (5 zł/mies.).</p>
+          <p>Tu dodamy formularz: zakres godzin w grafiku (np. 8:00 - 22:00), Twój numer telefonu do BLIK i domyślną stawkę.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ZAKŁADKA 5: PREMIUM -->
+    <section id="view-premium" class="view-container">
+      <div class="full-panel">
+        <h2 class="panel-section-title">⭐ TutorFlow Pro Premium</h2>
+        <p class="panel-section-sub">Zdejmij limity i korzystaj z automatycznych rozliczeń</p>
+
+        <div class="pricing-card">
+          <span style="background: rgba(245, 158, 11, 0.2); color: #fcd34d; font-size: 0.75rem; font-weight: 800; padding: 4px 10px; border-radius: 99px; text-transform: uppercase;">Abonament Korepetytora</span>
+          <div class="price-badge">
+            5 zł <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-muted);">/ miesiąc</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px;">
+            Wszystko, czego potrzebujesz do prowadzenia legalnych i uporządkowanych korepetycji:
+          </p>
+
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.88rem; margin-bottom: 24px;">
+            <li>✓ <b>Nielimitowana baza uczniów</b> i harmonogram</li>
+            <li>✓ <b>Automatyczny licznik limitu</b> działalności nierejestrowanej</li>
+            <li>✓ <b>Eksport ewidencji sprzedaży</b> do PIT-36 jednym kliknięciem</li>
+            <li>✓ <b>Generator wiadomości rozliczeniowych</b> z numerem BLIK</li>
+            <li>✓ <b>Synchronizacja w chmurze</b> między telefonem a laptopem</li>
+          </ul>
+
+          <button class="btn-upgrade" onclick="alert('W Kroku 5 podepniemy tu płatność BLIK przez Stripe!')">
+            Aktywuj subskrypcję za 5 zł (BLIK / Karta)
+          </button>
         </div>
       </div>
     </section>
@@ -877,22 +874,20 @@
   </div>
 
   <script>
-    // --- NAWIGACJA MIĘDZY ZAKŁADKAMI ---
-    function switchView(viewName) {
-      // 1. Zdejmij klasę active ze wszystkich przycisków w menu
+    // PRZEŁĄCZANIE ZAKŁADEK
+    function switchView(viewName, btnElement) {
       document.querySelectorAll('.nav-tab-btn').forEach(btn => btn.classList.remove('active'));
-      // 2. Schowaj wszystkie sekcje
       document.querySelectorAll('.view-container').forEach(view => view.classList.remove('active-view'));
 
-      // 3. Pokaż wybraną sekcję
       const targetView = document.getElementById(`view-${viewName}`);
       if (targetView) targetView.classList.add('active-view');
 
-      // 4. Podświetl kliknięty przycisk
-      event.currentTarget.classList.add('active');
+      if (btnElement) {
+        btnElement.classList.add('active');
+      }
     }
 
-    // --- OBSŁUGA COOKIES (365 DNI) ---
+    // OBSŁUGA COOKIES
     function setCookie(name, value, days = 365) {
       const d = new Date();
       d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -946,7 +941,6 @@
     function renderAll() {
       renderCalendarGrid();
       renderMobileTabs();
-      renderStudentsList();
       updateKPIs();
       updateLiveTimeAndIndicator();
     }
@@ -1025,40 +1019,6 @@
       });
     }
 
-    function renderStudentsList() {
-      const container = document.getElementById("students-container");
-      container.innerHTML = "";
-
-      if (students.length === 0) {
-        container.innerHTML = `
-          <div style="color: var(--text-muted); font-size: 0.8rem; padding: 20px 10px; text-align: center; line-height: 1.5;">
-            Baza uczniów jest pusta.<br>
-            Kliknij <b>+ Dodaj</b>, aby dodać pierwszego ucznia.
-          </div>
-        `;
-        return;
-      }
-
-      students.forEach(st => {
-        const item = document.createElement("div");
-        item.className = "student-item";
-        item.innerHTML = `
-          <div class="st-left">
-            <span class="st-pill ${st.level}"></span>
-            <div style="min-width:0;">
-              <div class="st-name">${escapeHtml(st.name)}</div>
-              <div class="st-desc">${LEVEL_LABELS[st.level] || st.level} • Kl. ${escapeHtml(st.grade || '—')}</div>
-            </div>
-          </div>
-          <div style="display: flex; align-items: center;">
-            <span class="st-rate">${st.rate} zł</span>
-            <button class="btn-icon-del" onclick="deleteStudent('${st.id}')" title="Usuń ucznia">✕</button>
-          </div>
-        `;
-        container.appendChild(item);
-      });
-    }
-
     function updateKPIs() {
       let count = 0;
       let totalWeekly = 0;
@@ -1091,7 +1051,7 @@
 
       if (hour >= startHour && hour < endHour) {
         const minutesFromStart = (hour - startHour) * 60 + minutes;
-        const rowHeightPx = 54;
+        const rowHeightPx = 56;
         const headerOffsetPx = 48;
         const topPosition = headerOffsetPx + (minutesFromStart / 60) * rowHeightPx;
 
@@ -1169,19 +1129,6 @@
       students.push(newStudent);
       closeModal("modal-new-student");
       saveState();
-    }
-
-    function deleteStudent(id) {
-      const st = students.find(s => s.id === id);
-      if (confirm(`Czy na pewno usunąć ucznia: ${st ? st.name : ""}? Spowoduje to wyczyszczenie jego lekcji z grafiku.`)) {
-        students = students.filter(s => s.id !== id);
-        Object.keys(schedule).forEach(k => {
-          if (schedule[k] && (schedule[k].studentId === id || schedule[k] === id)) {
-            delete schedule[k];
-          }
-        });
-        saveState();
-      }
     }
 
     function openModal(id) { document.getElementById(id).classList.add("open"); }
