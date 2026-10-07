@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>TutorFlow Pro</title>
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #090a0f;
+      --card-bg: rgba(18, 21, 31, 0.78);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --danger: #f43f5e;
+      --success: #10b981;
+      --warning: #f59e0b;
+
+      /* Kolory poziomów */
+      --col-podstawowka-bg: rgba(16, 185, 129, 0.14);
+      --col-podstawowka-border: rgba(16, 185, 129, 0.45);
+      --col-podstawowka-text: #6ee7b7;
+
+      --col-liceum-podst-bg: rgba(245, 158, 11, 0.14);
+      --col-liceum-podst-border: rgba(245, 158, 11, 0.45);
+      --col-liceum-podst-text: #fcd34d;
+
+      --col-liceum-rozsz-bg: rgba(139, 92, 246, 0.16);
+      --col-liceum-rozsz-border: rgba(139, 92, 246, 0.5);
+      --col-liceum-rozsz-text: #c4b5fd;
+
+      --col-inf-rozsz-bg: rgba(6, 182, 212, 0.16);
+      --col-inf-rozsz-border: rgba(6, 182, 212, 0.5);
+      --col-inf-rozsz-text: #67e8f9;
+
+      --col-once-bg: rgba(236, 72, 153, 0.18);
+      --col-once-border: #ec4899;
+      --col-once-text: #fbcfe8;
+
+      --row-height: 50px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.1) 0%, transparent 40%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 14px;
+    }
+
+    .app-layout {
+      width: 100%;
+      max-width: 1560px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      height: calc(100vh - 28px);
+    }
+
+    /* Pasek górny (Header) */
+    header {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 22px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #6366f1, #06b6d4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 18px rgba(99, 102, 241, 0.35);
+    }
+
+    .brand-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Nawigacja po zakładkach */
+    .nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid var(--card-border);
+    }
+
+    .nav-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-tab-btn.active {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    .kpi-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .kpi-chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      padding: 6px 14px;
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 2px;
+      min-width: 130px;
+      flex-shrink: 0;
+    }
+
+    .kpi-chip .label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+    }
+
+    .kpi-chip .value {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .kpi-chip.highlight .value {
+      color: var(--success);
+      text-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+    }
+
+    .live-clock-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: #38bdf8;
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      padding: 6px 12px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+      height: 44px;
+    }
+
+    .live-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #06b6d4;
+      animation: pulse 1.8s infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.7); }
+      70% { box-shadow: 0 0 0 6px rgba(6, 182, 212, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+    }
+
+    /* ZARZĄDZANIE WIDOKAMI (ZAKŁADKAMI) */
+    .view-container {
+      display: none;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .view-container.active-view {
+      display: flex;
+    }
+
+    /* Widok 1: Dashboard i Kalendarz */
+    .dashboard-body {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 14px;
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .panel {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 22px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    .panel-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .panel-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .calendar-container {
+      position: relative;
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      padding: 6px;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: 65px repeat(7, 1fr);
+      min-width: 840px;
+      border-collapse: separate;
+      border-spacing: 4px;
+      position: relative;
+    }
+
+    .cal-header-cell {
+      background: rgba(14, 17, 24, 0.85);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 10px 4px;
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(8px);
+    }
+
+    .cal-header-cell.today-col {
+      color: #38bdf8;
+      background: rgba(6, 182, 212, 0.12);
+      border-color: #06b6d4;
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.2);
+    }
+
+    .time-slot-label {
+      height: var(--row-height);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-radius: 12px;
+      background: rgba(11, 14, 20, 0.5);
+      border: 1px solid var(--card-border);
+    }
+
+    .cal-cell {
+      height: var(--row-height);
+      position: relative;
+      padding: 2px;
+    }
+
+    .cal-cell.today-col {
+      background: rgba(99, 102, 241, 0.04);
+      border-radius: 14px;
+    }
+
+    .slot-card {
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      border: 1px dashed rgba(255, 255, 255, 0.08);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      background: rgba(255, 255, 255, 0.02);
+      color: rgba(255, 255, 255, 0.2);
+      font-size: 0.85rem;
+      padding: 4px 8px;
+      text-align: center;
+    }
+
+    .slot-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .slot-card.occupied {
+      border-style: solid;
+      border-width: 1px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    }
+
+    .slot-card.level-podstawowka { background: var(--col-podstawowka-bg); border-color: var(--col-podstawowka-border); color: var(--col-podstawowka-text); }
+    .slot-card.level-liceum-podst { background: var(--col-liceum-podst-bg); border-color: var(--col-liceum-podst-border); color: var(--col-liceum-podst-text); }
+    .slot-card.level-liceum-rozsz { background: var(--col-liceum-rozsz-bg); border-color: var(--col-liceum-rozsz-border); color: var(--col-liceum-rozsz-text); }
+    .slot-card.level-inf-rozsz { background: var(--col-inf-rozsz-bg); border-color: var(--col-inf-rozsz-border); color: var(--col-inf-rozsz-text); }
+
+    .slot-card.is-once {
+      background: repeating-linear-gradient(
+        -45deg,
+        rgba(236, 72, 153, 0.14),
+        rgba(236, 72, 153, 0.14) 8px,
+        rgba(236, 72, 153, 0.24) 8px,
+        rgba(236, 72, 153, 0.24) 16px
+      ) !important;
+      border-color: var(--col-once-border) !important;
+      color: var(--col-once-text) !important;
+    }
+
+    .slot-card .s-name {
+      font-size: 0.84rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 95%;
+      letter-spacing: -0.2px;
+    }
+
+    .badge-once {
+      background: var(--col-once-border);
+      color: #fff;
+      font-size: 0.6rem;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-weight: 800;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    #current-time-line {
+      position: absolute;
+      left: 70px;
+      right: 6px;
+      height: 1.5px;
+      background: rgba(244, 63, 94, 0.45);
+      z-index: 25;
+      pointer-events: none;
+      display: none;
+      border-radius: 99px;
+    }
+
+    #current-time-line::before {
+      content: "";
+      position: absolute;
+      left: -4px;
+      top: -3px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(244, 63, 94, 0.7);
+      box-shadow: 0 0 5px rgba(244, 63, 94, 0.5);
+    }
+
+    /* Baza uczniów w pasku bocznym harmonogramu */
+    .students-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .student-item {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.15s ease;
+    }
+
+    .student-item:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .st-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .st-pill {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .st-pill.podstawowka { background: #10b981; box-shadow: 0 0 8px #10b981; }
+    .st-pill.liceum-podst { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
+    .st-pill.liceum-rozsz { background: #8b5cf6; box-shadow: 0 0 8px #8b5cf6; }
+    .st-pill.inf-rozsz { background: #06b6d4; box-shadow: 0 0 8px #06b6d4; }
+
+    .st-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .st-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .st-rate {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--success);
+      margin-right: 8px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .btn-icon-del {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      color: var(--danger);
+      cursor: pointer;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      transition: all 0.15s;
+    }
+    .btn-icon-del:hover {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    .btn-add-primary {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+    .btn-add-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Pasek dni na mobile */
+    .mobile-day-tabs {
+      display: none;
+      padding: 10px 14px;
+      gap: 8px;
+      overflow-x: auto;
+      border-bottom: 1px solid var(--card-border);
+      scrollbar-width: none;
+    }
+    .mobile-day-tabs::-webkit-scrollbar { display: none; }
+
+    .m-tab {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .m-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .m-tab.is-today { border-color: #06b6d4; color: #38bdf8; }
+
+    /* Modale */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px 16px;
+      z-index: 999;
+      overflow-y: auto;
+    }
+    .modal-backdrop.open { display: flex; }
+
+    .modal-dialog {
+      background: #151822;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 22px;
+      width: 100%;
+      max-width: 420px;
+      padding: 22px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+      animation: modalFade 0.15s ease-out;
+    }
+
+    @keyframes modalFade {
+      from { opacity: 0; transform: translateY(-10px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .modal-dialog h3 { font-size: 1.15rem; margin-bottom: 16px; font-weight: 800; }
+    .fg { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .fg label { font-size: 0.72rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); letter-spacing: 0.5px; }
+
+    .ctrl-input, .ctrl-select {
+      background: #0d0f16;
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-size: 0.92rem;
+      outline: none;
+      width: 100%;
+    }
+    .ctrl-input:focus, .ctrl-select:focus { border-color: var(--accent); }
+
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      background: rgba(236, 72, 153, 0.08);
+      border: 1px solid rgba(236, 72, 153, 0.3);
+      border-radius: 14px;
+      cursor: pointer;
+      margin: 14px 0;
+    }
+    .checkbox-container input { accent-color: #ec4899; width: 18px; height: 18px; cursor: pointer; }
+    .checkbox-container span { font-size: 0.85rem; font-weight: 700; color: #fbcfe8; }
+
+    .modal-btns { display: flex; gap: 8px; margin-top: 18px; }
+    .btn-m { flex: 1; padding: 12px; border-radius: 12px; font-size: 0.88rem; font-weight: 700; cursor: pointer; border: none; }
+    .btn-m-cancel { background: rgba(255, 255, 255, 0.06); color: var(--text-muted); }
+    .btn-m-clear { background: rgba(244, 63, 94, 0.15); border: 1px solid rgba(244, 63, 94, 0.3); color: var(--danger); }
+    .btn-m-submit { background: var(--accent); color: #fff; }
+
+    /* STYLE NOWYCH WIDOKÓW (Baza uczniów, Finanse) */
+    .full-panel {
+      width: 100%;
+      height: 100%;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 22px;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .placeholder-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px dashed var(--card-border);
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      color: var(--text-muted);
+      margin-top: 20px;
+    }
+
+    /* Pasek limitu nierejestrowanej */
+    .limit-progress-bar-bg {
+      width: 100%;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 99px;
+      overflow: hidden;
+      margin: 12px 0 6px 0;
+    }
+    .limit-progress-bar-fill {
+      height: 100%;
+      width: 35%; /* Przykładowa wartość testowa */
+      background: linear-gradient(90deg, #10b981, #f59e0b);
+      border-radius: 99px;
+      transition: width 0.3s ease;
+    }
+
+    /* Responsywność */
+    @media (max-width: 960px) {
+      body { padding: 8px; height: auto; }
+      .app-layout { height: auto; }
+      header { flex-direction: column; align-items: stretch; gap: 12px; }
+      .nav-tabs { overflow-x: auto; width: 100%; justify-content: space-between; }
+      .dashboard-body { grid-template-columns: 1fr; }
+      .kpi-bar { width: 100%; justify-content: space-between; }
+      .mobile-day-tabs { display: flex; }
+      .calendar-grid { min-width: 100%; grid-template-columns: 55px 1fr !important; }
+      .cal-header-cell:not(.mobile-visible-header) { display: none !important; }
+      .cal-cell:not(.mobile-visible-col) { display: none !important; }
+      #current-time-line { left: 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-layout">
+    <!-- Pasek górny z nawigacją po zakładkach -->
+    <header>
+      <div class="brand">
+        <div class="brand-logo">🎓</div>
+        <div>
+          <div class="brand-title">TutorFlow Pro</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted);">Panel Korepetytora</div>
+        </div>
+      </div>
+
+      <!-- Menu zakładek -->
+      <nav class="nav-tabs">
+        <button class="nav-tab-btn active" onclick="switchView('schedule')">
+          <span>📅</span> Harmonogram
+        </button>
+        <button class="nav-tab-btn" onclick="switchView('students')">
+          <span>👥</span> Uczniowie
+        </button>
+        <button class="nav-tab-btn" onclick="switchView('finances')">
+          <span>💰</span> Finanse & Limit
+        </button>
+        <button class="nav-tab-btn" onclick="switchView('settings')">
+          <span>⚙️</span> Ustawienia
+        </button>
+      </nav>
+
+      <!-- KPI Bar -->
+      <div class="kpi-bar">
+        <div class="kpi-chip">
+          <span class="label">Lekcje tyg.</span>
+          <span class="value" id="kpi-count">0</span>
+        </div>
+        <div class="kpi-chip highlight">
+          <span class="label">Zarobek tyg.</span>
+          <span class="value" id="kpi-earnings">0 zł</span>
+        </div>
+        <div class="live-clock-badge">
+          <span class="live-pulse"></span>
+          <span id="live-time-display">--:--:--</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- WIDOK 1: HARMONOGRAM (Twój obecny pulpit) -->
+    <section id="view-schedule" class="view-container active-view">
+      <div class="dashboard-body">
+        <!-- Kalendarz -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span>📅 Harmonogram tygodniowy</span>
+            </div>
+            <div style="font-size: 0.72rem; color: var(--text-muted);">Czas: Polska</div>
+          </div>
+
+          <div class="mobile-day-tabs" id="mobile-tabs-bar"></div>
+
+          <div class="calendar-container" id="cal-scroll-area">
+            <div id="current-time-line"></div>
+            <div class="calendar-grid" id="main-grid"></div>
+          </div>
+        </div>
+
+        <!-- Baza uczniów w podglądzie -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span>👥 Szybka lista</span>
+            </div>
+            <button class="btn-add-primary" onclick="openStudentModal()">+ Dodaj</button>
+          </div>
+          <div class="students-scroll" id="students-container"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WIDOK 2: BAZA UCZNIÓW (Dedykowana zakładka - zrobimy w Kroku 2) -->
+    <section id="view-students" class="view-container">
+      <div class="full-panel">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h2 style="font-size: 1.3rem; font-weight: 800;">👥 Kartoteka Uczniów</h2>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">Zarządzaj danymi kontaktowymi, stawkami i notatkami uczniów</p>
+          </div>
+          <button class="btn-add-primary" onclick="openStudentModal()">+ Nowy Uczeń</button>
+        </div>
+
+        <div class="placeholder-card">
+          <p>Tu w Kroku 2 wdrożymy pełne karty uczniów z numerami do rodziców, notatkami i historią lekcji.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WIDOK 3: FINANSE I LIMIT (Zrobimy w Kroku 3) -->
+    <section id="view-finances" class="view-container">
+      <div class="full-panel">
+        <h2 style="font-size: 1.3rem; font-weight: 800;">💰 Finanse & Działalność Nierejestrowana</h2>
+        <p style="font-size: 0.8rem; color: var(--text-muted);">Kontroluj limit przychodów i ewidencję sprzedaży bez podatkowych niespodzianek</p>
+
+        <!-- Karta limitu działalności nierejestrowanej -->
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border); border-radius: 18px; padding: 20px; margin-top: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Limit kwartalny działalności nierejestrowanej</span>
+            <span style="font-size: 0.95rem; font-weight: 800; color: #38bdf8;">Limit: 10 813,50 zł</span>
+          </div>
+          <div class="limit-progress-bar-bg">
+            <div class="limit-progress-bar-fill"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted);">
+            <span>Wykorzystano: 3 800 zł (35%)</span>
+            <span style="color: var(--success);">Bezpiecznie (do limitu: 7 013,50 zł)</span>
+          </div>
+        </div>
+
+        <div class="placeholder-card">
+          <p>Tu w Kroku 3 wdrożymy tabelę rozliczeń z rodzicami, ewidencję sprzedaży do PIT-36 i generator SMS-ów z prośbą o wpłatę BLIK.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WIDOK 4: USTAWIENIA -->
+    <section id="view-settings" class="view-container">
+      <div class="full-panel">
+        <h2 style="font-size: 1.3rem; font-weight: 800;">⚙️ Ustawienia konta</h2>
+        <p style="font-size: 0.8rem; color: var(--text-muted);">Konfiguracja godzin pracy, numeru telefonu do BLIK i subskrypcji</p>
+        
+        <div class="placeholder-card">
+          <p>Tu znajdzie się konfiguracja Twojego numeru BLIK do rozliczeń oraz status subskrypcji aplikacji (5 zł/mies.).</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- MODAL: Przypisywanie terminu -->
+  <div class="modal-backdrop" id="modal-assign">
+    <div class="modal-dialog">
+      <h3 id="assign-title">Termin lekcji</h3>
+      <div class="fg">
+        <label>Uczeń</label>
+        <select id="assign-student" class="ctrl-select"></select>
+      </div>
+      <label class="checkbox-container">
+        <input type="checkbox" id="assign-is-once" />
+        <span>Lekcja jednorazowa</span>
+      </label>
+      <div class="modal-btns">
+        <button class="btn-m btn-m-cancel" onclick="closeModal('modal-assign')">Anuluj</button>
+        <button class="btn-m btn-m-clear" onclick="clearSlot()">Wyczyść slot</button>
+        <button class="btn-m btn-m-submit" onclick="saveSlot()">Zapisz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Nowy uczeń -->
+  <div class="modal-backdrop" id="modal-new-student">
+    <div class="modal-dialog">
+      <h3>Dodaj ucznia do bazy</h3>
+      <div class="fg">
+        <label>Imię i nazwisko</label>
+        <input type="text" id="stud-name" class="ctrl-input" placeholder="np. Kamil B" />
+      </div>
+      <div class="fg">
+        <label>Poziom kształcenia</label>
+        <select id="stud-level" class="ctrl-select">
+          <option value="podstawowka">Podstawówka</option>
+          <option value="liceum-podst">Liceum podstawa</option>
+          <option value="liceum-rozsz">Liceum rozszerzenie</option>
+          <option value="inf-rozsz">Informatyka rozszerzenie</option>
+        </select>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <div class="fg" style="flex: 1;">
+          <label>Klasa</label>
+          <input type="text" id="stud-grade" class="ctrl-input" placeholder="np. 5" />
+        </div>
+        <div class="fg" style="flex: 1;">
+          <label>Stawka zł/h</label>
+          <input type="number" id="stud-rate" class="ctrl-input" placeholder="np. 60" />
+        </div>
+      </div>
+      <div class="modal-btns">
+        <button class="btn-m btn-m-cancel" onclick="closeModal('modal-new-student')">Anuluj</button>
+        <button class="btn-m btn-m-submit" onclick="saveStudent()">Dodaj</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- NAWIGACJA MIĘDZY ZAKŁADKAMI ---
+    function switchView(viewName) {
+      // 1. Zdejmij klasę active ze wszystkich przycisków w menu
+      document.querySelectorAll('.nav-tab-btn').forEach(btn => btn.classList.remove('active'));
+      // 2. Schowaj wszystkie sekcje
+      document.querySelectorAll('.view-container').forEach(view => view.classList.remove('active-view'));
+
+      // 3. Pokaż wybraną sekcję
+      const targetView = document.getElementById(`view-${viewName}`);
+      if (targetView) targetView.classList.add('active-view');
+
+      // 4. Podświetl kliknięty przycisk
+      event.currentTarget.classList.add('active');
+    }
+
+    // --- OBSŁUGA COOKIES (365 DNI) ---
+    function setCookie(name, value, days = 365) {
+      const d = new Date();
+      d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+      document.cookie = `${name}=${encodeURIComponent(JSON.stringify(value))};expires=${d.toUTCString()};path=/;SameSite=Lax`;
+    }
+
+    function getCookie(name) {
+      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      if (match) {
+        try {
+          return JSON.parse(decodeURIComponent(match[2]));
+        } catch (e) {
+          return null;
+        }
+      }
+      return null;
+    }
+
+    const DAYS = ["Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"];
+    const HOURS = ["14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
+
+    const LEVEL_LABELS = {
+      "podstawowka": "Podstawówka",
+      "liceum-podst": "Liceum podstawa",
+      "liceum-rozsz": "Liceum rozszerzenie",
+      "inf-rozsz": "Informatyka rozszerzenie"
+    };
+
+    let students = getCookie("tf_students_clean") || [];
+    let schedule = getCookie("tf_schedule_clean") || {};
+    let selectedSlotKey = null;
+    let activeMobileDayIndex = getCurrentPolandDayIndex();
+
+    function saveState() {
+      setCookie("tf_students_clean", students);
+      setCookie("tf_schedule_clean", schedule);
+      renderAll();
+    }
+
+    function getPolandDate() {
+      const now = new Date();
+      const polandString = now.toLocaleString("en-US", { timeZone: "Europe/Warsaw" });
+      return new Date(polandString);
+    }
+
+    function getCurrentPolandDayIndex() {
+      const pDay = getPolandDate().getDay();
+      return pDay === 0 ? 6 : pDay - 1;
+    }
+
+    function renderAll() {
+      renderCalendarGrid();
+      renderMobileTabs();
+      renderStudentsList();
+      updateKPIs();
+      updateLiveTimeAndIndicator();
+    }
+
+    function renderCalendarGrid() {
+      const grid = document.getElementById("main-grid");
+      grid.innerHTML = "";
+      const todayIndex = getCurrentPolandDayIndex();
+
+      const cornerHeader = document.createElement("div");
+      cornerHeader.className = "cal-header-cell";
+      cornerHeader.textContent = "GODZ.";
+      grid.appendChild(cornerHeader);
+
+      DAYS.forEach((day, index) => {
+        const th = document.createElement("div");
+        const isToday = index === todayIndex;
+        th.className = `cal-header-cell ${isToday ? 'today-col' : ''} ${index === activeMobileDayIndex ? 'mobile-visible-header' : ''}`;
+        th.innerHTML = `${day} ${isToday ? '<span style="font-size:0.65rem; display:block; color:#38bdf8;">(DZIŚ)</span>' : ''}`;
+        grid.appendChild(th);
+      });
+
+      HOURS.forEach(hour => {
+        const timeCell = document.createElement("div");
+        timeCell.className = "time-slot-label";
+        timeCell.textContent = hour;
+        grid.appendChild(timeCell);
+
+        DAYS.forEach((day, dayIndex) => {
+          const slotKey = `${hour}_${day}`;
+          const isToday = dayIndex === todayIndex;
+
+          const cell = document.createElement("div");
+          cell.className = `cal-cell ${isToday ? 'today-col' : ''} ${dayIndex === activeMobileDayIndex ? 'mobile-visible-col' : ''}`;
+
+          const slotData = schedule[slotKey];
+          const student = slotData ? students.find(s => s.id === (slotData.studentId || slotData)) : null;
+          const isOnce = slotData && slotData.isOnce;
+
+          const card = document.createElement("div");
+          card.className = "slot-card";
+
+          if (student) {
+            card.classList.add("occupied", `level-${student.level}`);
+            if (isOnce) card.classList.add("is-once");
+
+            card.innerHTML = `
+              <div class="s-name">${escapeHtml(student.name)}</div>
+              ${isOnce ? '<span class="badge-once">1x</span>' : ''}
+            `;
+          } else {
+            card.innerHTML = `<span>+</span>`;
+          }
+
+          card.onclick = () => openAssignModal(slotKey, hour, day);
+          cell.appendChild(card);
+          grid.appendChild(cell);
+        });
+      });
+    }
+
+    function renderMobileTabs() {
+      const container = document.getElementById("mobile-tabs-bar");
+      container.innerHTML = "";
+      const todayIndex = getCurrentPolandDayIndex();
+
+      DAYS.forEach((day, idx) => {
+        const btn = document.createElement("button");
+        btn.className = `m-tab ${idx === activeMobileDayIndex ? 'active' : ''} ${idx === todayIndex ? 'is-today' : ''}`;
+        btn.textContent = day + (idx === todayIndex ? ' •' : '');
+        btn.onclick = () => {
+          activeMobileDayIndex = idx;
+          renderAll();
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function renderStudentsList() {
+      const container = document.getElementById("students-container");
+      container.innerHTML = "";
+
+      if (students.length === 0) {
+        container.innerHTML = `
+          <div style="color: var(--text-muted); font-size: 0.8rem; padding: 20px 10px; text-align: center; line-height: 1.5;">
+            Baza uczniów jest pusta.<br>
+            Kliknij <b>+ Dodaj</b>, aby dodać pierwszego ucznia.
+          </div>
+        `;
+        return;
+      }
+
+      students.forEach(st => {
+        const item = document.createElement("div");
+        item.className = "student-item";
+        item.innerHTML = `
+          <div class="st-left">
+            <span class="st-pill ${st.level}"></span>
+            <div style="min-width:0;">
+              <div class="st-name">${escapeHtml(st.name)}</div>
+              <div class="st-desc">${LEVEL_LABELS[st.level] || st.level} • Kl. ${escapeHtml(st.grade || '—')}</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center;">
+            <span class="st-rate">${st.rate} zł</span>
+            <button class="btn-icon-del" onclick="deleteStudent('${st.id}')" title="Usuń ucznia">✕</button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function updateKPIs() {
+      let count = 0;
+      let totalWeekly = 0;
+
+      Object.values(schedule).forEach(slotData => {
+        if (!slotData) return;
+        const sId = slotData.studentId || slotData;
+        const student = students.find(s => s.id === sId);
+        if (student) {
+          count++;
+          totalWeekly += Number(student.rate) || 0;
+        }
+      });
+
+      document.getElementById("kpi-count").textContent = count;
+      document.getElementById("kpi-earnings").textContent = `${totalWeekly.toLocaleString("pl-PL")} zł`;
+    }
+
+    function updateLiveTimeAndIndicator() {
+      const nowPoland = getPolandDate();
+      const timeStr = nowPoland.toLocaleTimeString("pl-PL", { hour12: false });
+      document.getElementById("live-time-display").textContent = timeStr;
+
+      const hour = nowPoland.getHours();
+      const minutes = nowPoland.getMinutes();
+      const line = document.getElementById("current-time-line");
+
+      const startHour = 14;
+      const endHour = 23;
+
+      if (hour >= startHour && hour < endHour) {
+        const minutesFromStart = (hour - startHour) * 60 + minutes;
+        const rowHeightPx = 54;
+        const headerOffsetPx = 48;
+        const topPosition = headerOffsetPx + (minutesFromStart / 60) * rowHeightPx;
+
+        line.style.display = "block";
+        line.style.top = `${topPosition}px`;
+      } else {
+        line.style.display = "none";
+      }
+    }
+
+    setInterval(updateLiveTimeAndIndicator, 1000);
+
+    function openAssignModal(slotKey, hour, day) {
+      selectedSlotKey = slotKey;
+      document.getElementById("assign-title").textContent = `${day}, ${hour}`;
+      
+      const select = document.getElementById("assign-student");
+      select.innerHTML = `<option value="">-- Wolny slot --</option>`;
+
+      const currentData = schedule[slotKey];
+      const currentStudentId = currentData ? (currentData.studentId || currentData) : null;
+      const isOnce = currentData ? currentData.isOnce : false;
+
+      students.forEach(st => {
+        const opt = document.createElement("option");
+        opt.value = st.id;
+        opt.textContent = `${st.name} [${LEVEL_LABELS[st.level] || st.level}] — ${st.rate} zł/h`;
+        if (st.id === currentStudentId) opt.selected = true;
+        select.appendChild(opt);
+      });
+
+      document.getElementById("assign-is-once").checked = Boolean(isOnce);
+      openModal("modal-assign");
+    }
+
+    function saveSlot() {
+      const studentId = document.getElementById("assign-student").value;
+      const isOnce = document.getElementById("assign-is-once").checked;
+
+      if (studentId) {
+        schedule[selectedSlotKey] = { studentId, isOnce };
+      } else {
+        delete schedule[selectedSlotKey];
+      }
+
+      closeModal("modal-assign");
+      saveState();
+    }
+
+    function clearSlot() {
+      if (selectedSlotKey) {
+        delete schedule[selectedSlotKey];
+        closeModal("modal-assign");
+        saveState();
+      }
+    }
+
+    function openStudentModal() {
+      document.getElementById("stud-name").value = "";
+      document.getElementById("stud-grade").value = "";
+      document.getElementById("stud-rate").value = "";
+      openModal("modal-new-student");
+    }
+
+    function saveStudent() {
+      const name = document.getElementById("stud-name").value.trim();
+      const level = document.getElementById("stud-level").value;
+      const grade = document.getElementById("stud-grade").value.trim();
+      const rate = parseFloat(document.getElementById("stud-rate").value);
+
+      if (!name) return alert("Podaj imię lub oznaczenie ucznia.");
+      if (isNaN(rate) || rate <= 0) return alert("Wprowadź prawidłową stawkę godzinową w zł.");
+
+      const newStudent = { id: "s_" + Date.now(), name, level, grade, rate };
+      students.push(newStudent);
+      closeModal("modal-new-student");
+      saveState();
+    }
+
+    function deleteStudent(id) {
+      const st = students.find(s => s.id === id);
+      if (confirm(`Czy na pewno usunąć ucznia: ${st ? st.name : ""}? Spowoduje to wyczyszczenie jego lekcji z grafiku.`)) {
+        students = students.filter(s => s.id !== id);
+        Object.keys(schedule).forEach(k => {
+          if (schedule[k] && (schedule[k].studentId === id || schedule[k] === id)) {
+            delete schedule[k];
+          }
+        });
+        saveState();
+      }
+    }
+
+    function openModal(id) { document.getElementById(id).classList.add("open"); }
+    function closeModal(id) { document.getElementById(id).classList.remove("open"); }
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    window.addEventListener("click", e => {
+      if (e.target.classList.contains("modal-backdrop")) {
+        e.target.classList.remove("open");
+      }
+    });
+
+    renderAll();
+  </script>
+</body>
+</html>
