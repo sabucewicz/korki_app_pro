@@ -76,7 +76,7 @@
       height: calc(100vh - 28px);
     }
 
-    /* Pasek górny (Header) */
+    /* Pasek górny */
     header {
       background: var(--card-bg);
       backdrop-filter: blur(16px);
@@ -236,7 +236,7 @@
       100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
     }
 
-    /* PRZEŁĄCZANIE ZAKŁADEK */
+    /* Przełączanie widoków */
     .view-container {
       display: none;
       flex: 1;
@@ -247,7 +247,7 @@
       display: flex;
     }
 
-    /* ZAKŁADKA 1: SAM HARMONOGRAM */
+    /* Harmonogram */
     .schedule-full-view {
       width: 100%;
       height: 100%;
@@ -468,7 +468,7 @@
     .m-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
     .m-tab.is-today { border-color: #06b6d4; color: #38bdf8; }
 
-    /* UNIWERSALNE PANELE DLA POZOSTAŁYCH ZAKŁADEK */
+    /* Panele pozostałych zakładek */
     .full-panel {
       width: 100%;
       height: 100%;
@@ -710,13 +710,13 @@
       </div>
     </header>
 
-    <!-- ZAKŁADKA 1: HARMONOGRAM (24H) -->
+    <!-- ZAKŁADKA 1: HARMONOGRAM (8:00 - 23:00) -->
     <section id="view-schedule" class="view-container active-view">
       <div class="schedule-full-view">
         <div class="panel">
           <div class="panel-header">
             <div class="panel-title">
-              <span>📅 Harmonogram tygodniowy (24h)</span>
+              <span>📅 Harmonogram tygodniowy (8:00 – 23:00)</span>
             </div>
             <div style="font-size: 0.72rem; color: var(--text-muted);">Czas: Polska</div>
           </div>
@@ -812,7 +812,7 @@
         <p class="panel-section-sub">Dostosuj godziny pracy harmonogramu i swoje dane kontaktowe</p>
 
         <div class="placeholder-card">
-          <p>Tu dodamy konfigurację: zakres godzin w grafiku (np. domyślnie 24h z możliwością skrócenia do 8:00 - 22:00), Twój numer do BLIK i domyślną stawkę.</p>
+          <p>Tu dodamy konfigurację: zakres godzin w grafiku (domyślnie 8:00 - 23:00 z opcją zmiany), Twój numer do BLIK i domyślną stawkę.</p>
         </div>
       </div>
     </section>
@@ -887,7 +887,7 @@
       }
     }
 
-    // OBSŁUGA COOKIES
+    // OBSŁUGA COOKIES (nowy prefiks _v2 dla czystego startu)
     function setCookie(name, value, days = 365) {
       const d = new Date();
       d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -908,8 +908,13 @@
 
     const DAYS = ["Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"];
     
-    // PEŁNE 24 GODZINY: OD 00:00 DO 23:00
-    const HOURS = Array.from({ length: 24 }, (_, i) => `${String(i).padStart(2, '0')}:00`);
+    // GODZINY ROBOCZE OD 08:00 DO 23:00 (16 GODZIN)
+    const START_HOUR = 8;
+    const END_HOUR = 23;
+    const HOURS = Array.from(
+      { length: (END_HOUR - START_HOUR + 1) }, 
+      (_, i) => `${String(START_HOUR + i).padStart(2, '0')}:00`
+    );
 
     const LEVEL_LABELS = {
       "podstawowka": "Podstawówka",
@@ -918,15 +923,15 @@
       "inf-rozsz": "Informatyka rozszerzenie"
     };
 
-    // PUSTY START
-    let students = getCookie("tf_students_clean") || [];
-    let schedule = getCookie("tf_schedule_clean") || {};
+    // CAŁKOWICIE CZYSTY START (PUSTA BAZA I HARMONOGRAM)
+    let students = getCookie("tf_students_v2") || [];
+    let schedule = getCookie("tf_schedule_v2") || {};
     let selectedSlotKey = null;
     let activeMobileDayIndex = getCurrentPolandDayIndex();
 
     function saveState() {
-      setCookie("tf_students_clean", students);
-      setCookie("tf_schedule_clean", schedule);
+      setCookie("tf_students_v2", students);
+      setCookie("tf_schedule_v2", schedule);
       renderAll();
     }
 
@@ -1049,14 +1054,18 @@
       const minutes = nowPoland.getMinutes();
       const line = document.getElementById("current-time-line");
 
-      // Obliczenie pozycji dla pełnej siatki 24h (od 0:00 do 23:59)
-      const minutesFromStart = hour * 60 + minutes;
-      const rowHeightPx = 56;
-      const headerOffsetPx = 48;
-      const topPosition = headerOffsetPx + (minutesFromStart / 60) * rowHeightPx;
+      // Sprawdzamy czy mieści się w przedziale 8:00 - 23:59
+      if (hour >= START_HOUR && hour <= END_HOUR) {
+        const minutesFromStart = (hour - START_HOUR) * 60 + minutes;
+        const rowHeightPx = 56;
+        const headerOffsetPx = 48;
+        const topPosition = headerOffsetPx + (minutesFromStart / 60) * rowHeightPx;
 
-      line.style.display = "block";
-      line.style.top = `${topPosition}px`;
+        line.style.display = "block";
+        line.style.top = `${topPosition}px`;
+      } else {
+        line.style.display = "none";
+      }
     }
 
     setInterval(updateLiveTimeAndIndicator, 1000);
