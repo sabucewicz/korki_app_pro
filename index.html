@@ -425,7 +425,7 @@
       left: 76px;
       right: 8px;
       height: 1.5px;
-      background: rgba(244, 63, 94, 0.45);
+      background: rgba(244, 63, 94, 0.55);
       z-index: 25;
       pointer-events: none;
       display: none;
@@ -440,8 +440,8 @@
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: rgba(244, 63, 94, 0.7);
-      box-shadow: 0 0 5px rgba(244, 63, 94, 0.5);
+      background: rgba(244, 63, 94, 0.85);
+      box-shadow: 0 0 6px rgba(244, 63, 94, 0.6);
     }
 
     .mobile-day-tabs {
@@ -535,7 +535,7 @@
     }
     .limit-progress-bar-fill {
       height: 100%;
-      width: 35%;
+      width: 0%;
       background: linear-gradient(90deg, #10b981, #f59e0b);
       border-radius: 99px;
     }
@@ -664,7 +664,7 @@
 <body>
 
   <div class="app-layout">
-    <!-- Górny Header -->
+    <!-- Header -->
     <header>
       <div class="brand">
         <div class="brand-logo">🎓</div>
@@ -674,7 +674,7 @@
         </div>
       </div>
 
-      <!-- Menu zakładek -->
+      <!-- Nawigacja: Harmonogram -> Uczniowie -> Finanse -> ⭐ Premium -> ⚙️ Ustawienia -->
       <nav class="nav-tabs">
         <button class="nav-tab-btn active" onclick="switchView('schedule', this)">
           <span>📅</span> Harmonogram
@@ -685,11 +685,11 @@
         <button class="nav-tab-btn" onclick="switchView('finances', this)">
           <span>💰</span> Finanse
         </button>
-        <button class="nav-tab-btn" onclick="switchView('settings', this)">
-          <span>⚙️</span> Ustawienia
-        </button>
         <button class="nav-tab-btn premium-btn" onclick="switchView('premium', this)">
           <span>⭐</span> Premium
+        </button>
+        <button class="nav-tab-btn" onclick="switchView('settings', this)">
+          <span>⚙️</span> Ustawienia
         </button>
       </nav>
 
@@ -710,13 +710,13 @@
       </div>
     </header>
 
-    <!-- ZAKŁADKA 1: SAM HARMONOGRAM (PEŁNA SZEROKOŚĆ) -->
+    <!-- ZAKŁADKA 1: HARMONOGRAM (24H) -->
     <section id="view-schedule" class="view-container active-view">
       <div class="schedule-full-view">
         <div class="panel">
           <div class="panel-header">
             <div class="panel-title">
-              <span>📅 Harmonogram tygodniowy</span>
+              <span>📅 Harmonogram tygodniowy (24h)</span>
             </div>
             <div style="font-size: 0.72rem; color: var(--text-muted);">Czas: Polska</div>
           </div>
@@ -775,19 +775,7 @@
       </div>
     </section>
 
-    <!-- ZAKŁADKA 4: USTAWIENIA -->
-    <section id="view-settings" class="view-container">
-      <div class="full-panel">
-        <h2 class="panel-section-title">⚙️ Ustawienia</h2>
-        <p class="panel-section-sub">Dostosuj godziny pracy harmonogramu i swoje dane kontaktowe</p>
-
-        <div class="placeholder-card">
-          <p>Tu dodamy formularz: zakres godzin w grafiku (np. 8:00 - 22:00), Twój numer telefonu do BLIK i domyślną stawkę.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ZAKŁADKA 5: PREMIUM -->
+    <!-- ZAKŁADKA 4: ⭐ PREMIUM -->
     <section id="view-premium" class="view-container">
       <div class="full-panel">
         <h2 class="panel-section-title">⭐ TutorFlow Pro Premium</h2>
@@ -799,7 +787,7 @@
             5 zł <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-muted);">/ miesiąc</span>
           </div>
           <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px;">
-            Wszystko, czego potrzebujesz do prowadzenia legalnych i uporządkowanych korepetycji:
+            Wszystko, czego potrzebujesz do prowadzenia uporządkowanych i legalnych korepetycji:
           </p>
 
           <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 0.88rem; margin-bottom: 24px;">
@@ -807,12 +795,24 @@
             <li>✓ <b>Automatyczny licznik limitu</b> działalności nierejestrowanej</li>
             <li>✓ <b>Eksport ewidencji sprzedaży</b> do PIT-36 jednym kliknięciem</li>
             <li>✓ <b>Generator wiadomości rozliczeniowych</b> z numerem BLIK</li>
-            <li>✓ <b>Synchronizacja w chmurze</b> między telefonem a laptopem</li>
+            <li>✓ <b>Synchronizacja w chmurze</b> między telefonem a komputerem</li>
           </ul>
 
           <button class="btn-upgrade" onclick="alert('W Kroku 5 podepniemy tu płatność BLIK przez Stripe!')">
             Aktywuj subskrypcję za 5 zł (BLIK / Karta)
           </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ZAKŁADKA 5: ⚙️ USTAWIENIA -->
+    <section id="view-settings" class="view-container">
+      <div class="full-panel">
+        <h2 class="panel-section-title">⚙️ Ustawienia</h2>
+        <p class="panel-section-sub">Dostosuj godziny pracy harmonogramu i swoje dane kontaktowe</p>
+
+        <div class="placeholder-card">
+          <p>Tu dodamy konfigurację: zakres godzin w grafiku (np. domyślnie 24h z możliwością skrócenia do 8:00 - 22:00), Twój numer do BLIK i domyślną stawkę.</p>
         </div>
       </div>
     </section>
@@ -907,7 +907,9 @@
     }
 
     const DAYS = ["Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"];
-    const HOURS = ["14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
+    
+    // PEŁNE 24 GODZINY: OD 00:00 DO 23:00
+    const HOURS = Array.from({ length: 24 }, (_, i) => `${String(i).padStart(2, '0')}:00`);
 
     const LEVEL_LABELS = {
       "podstawowka": "Podstawówka",
@@ -916,6 +918,7 @@
       "inf-rozsz": "Informatyka rozszerzenie"
     };
 
+    // PUSTY START
     let students = getCookie("tf_students_clean") || [];
     let schedule = getCookie("tf_schedule_clean") || {};
     let selectedSlotKey = null;
@@ -1046,20 +1049,14 @@
       const minutes = nowPoland.getMinutes();
       const line = document.getElementById("current-time-line");
 
-      const startHour = 14;
-      const endHour = 23;
+      // Obliczenie pozycji dla pełnej siatki 24h (od 0:00 do 23:59)
+      const minutesFromStart = hour * 60 + minutes;
+      const rowHeightPx = 56;
+      const headerOffsetPx = 48;
+      const topPosition = headerOffsetPx + (minutesFromStart / 60) * rowHeightPx;
 
-      if (hour >= startHour && hour < endHour) {
-        const minutesFromStart = (hour - startHour) * 60 + minutes;
-        const rowHeightPx = 56;
-        const headerOffsetPx = 48;
-        const topPosition = headerOffsetPx + (minutesFromStart / 60) * rowHeightPx;
-
-        line.style.display = "block";
-        line.style.top = `${topPosition}px`;
-      } else {
-        line.style.display = "none";
-      }
+      line.style.display = "block";
+      line.style.top = `${topPosition}px`;
     }
 
     setInterval(updateLiveTimeAndIndicator, 1000);
